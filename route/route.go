@@ -5,7 +5,9 @@ import (
 	"net/http"
 )
 
-type RouteNodes struct {
+type Content struct {
+	Resp http.ResponseWriter
+	Req  *http.Request
 }
 
 type RouteNode struct {
@@ -14,13 +16,13 @@ type RouteNode struct {
 	Handler func(http.ResponseWriter, *http.Request)
 }
 
-var Routes = map[string][]*RouteNode{}
+var Routes = map[string][]RouteNode{}
 
 func AddRoute(method, path string, handler func(http.ResponseWriter, *http.Request)) {
 	if Routes[path] == nil {
 		http.HandleFunc(path, IndexHandler)
 	}
-	Routes[path] = append(Routes[path], &RouteNode{Method: method, Path: path, Handler: handler})
+	Routes[path] = append(Routes[path], RouteNode{Method: method, Path: path, Handler: handler})
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,5 +33,5 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	fmt.Fprintf(w, "method not allowd,%v", r.Method+r.URL.Path)
+	fmt.Fprintf(w, "method not allowd,%v", r.Method)
 }

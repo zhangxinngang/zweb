@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"html"
 	"io/ioutil"
 	"net/http"
 	"zweb/dao"
@@ -14,7 +13,7 @@ func GetBlogHandler(w http.ResponseWriter, r *http.Request) {
 	blog := dao.GetBlog(r.Form.Get("id"))
 	info, _ := json.Marshal(blog)
 	fmt.Println(r.RequestURI, r.Method, blog)
-	fmt.Fprintf(w, "Hello, %q,%v", html.EscapeString(r.URL.Path), string(info))
+	fmt.Fprintf(w, string(info))
 }
 
 func PostBlogHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +23,8 @@ func PostBlogHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	blog := dao.Blog{}
-	json.Unmarshal(data, &blog)
+	err = json.Unmarshal(data, &blog)
+	fmt.Println(err, "err", string(data))
 	dao.AddBlog(blog)
-	w.Write([]byte("asdsd"))
+	w.Write([]byte("ok"))
 }
