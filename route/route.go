@@ -22,6 +22,7 @@ func AddRoute(method, path string, handler func(http.ResponseWriter, *http.Reque
 	if Routes[path] == nil {
 		http.HandleFunc(path, IndexHandler)
 	}
+	//尽量常用的method放前面 如GET POST
 	Routes[path] = append(Routes[path], RouteNode{Method: method, Path: path, Handler: handler})
 }
 

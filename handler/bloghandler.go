@@ -28,3 +28,7 @@ func PostBlogHandler(w http.ResponseWriter, r *http.Request) {
 	dao.AddBlog(blog)
 	w.Write([]byte("ok"))
 }
+
+func GetHelloHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello world"))
+}
